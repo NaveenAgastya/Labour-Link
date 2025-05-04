@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labour Booking</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --secondary-dark: #27ae60;
+            --danger: #e74c3c;
+            --dark: #333333;
+            --light: #f8f9fa;
+            --gray: #95a5a6;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: var(--transition);
+            min-height: 520px;
+            position: relative;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        h1, h2 {
+            margin-bottom: 24px;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .logo-placeholder {
+            width: 120px;
+            height: 120px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .logo-placeholder:hover {
+            transform: rotate(5deg);
+        }
+
+        .logo-icon {
+            font-size: 50px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .checkbox-label {
+            display: inline;
+            margin-left: 5px;
+            font-weight: normal;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+            height: 20px;
+        }
+        
+        .remember-me {
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .forgot-password {
+            float: right;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-separator {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .login-separator:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .login-separator span {
+            background-color: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 16px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f9f9f9;
+        }
+
+        .btn-google {
+            background-color: white;
+            color: #444;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-google i {
+            color: #DB4437;
+        }
+
+        .btn-success {
+            background-color: var(--secondary);
+        }
+
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .role-btn {
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 2px solid #eee;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .role-btn.selected {
+            border-color: var(--primary);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            color: var(--dark);
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-tag {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-tag:hover, .filter-tag.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-box input {
+            padding-left: 45px;
+        }
+
+        .worker-card {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .worker-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: #ddd;
+        }
+
+        .worker-img {
+            width: 70px;
+            height: 70px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .worker-info {
+            flex: 1;
+        }
+
+        .worker-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .worker-details {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .skills-row {
+            margin: 10px 0;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .ratings {
+            display: flex;
+            margin: 10px 0;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            align-items: center;
+        }
+
+        .stars {
+            color: #f1c40f;
+            margin-right: 8px;
+        }
+
+        .booking-item {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: var(--transition);
+        }
+
+        .booking-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: #ddd;
+        }
+
+        .booking-date {
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .booking-info {
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        /* Animations */
+        .animate-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .screen {
+                padding: 20px;
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Welcome Screen -->
+    <div class="screen active" id="welcome-screen">
+        <div class="logo-placeholder animate-in">
+            <i class="fas fa-tools logo-icon"></i>
+        </div>
+        <h1>Labour Booking</h1>
+        <p>Find skilled workers for your projects or offer your services. Quick bookings, reliable professionals.</p>
+        <button class="btn animate-in" onclick="showScreen('login-screen')">Get Started</button>
+        <div class="demo-credentials">
+            <p style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--gray);">
+                Demo Credentials:
+            </p>
+            <div style="border: 1px solid #eee; border-radius: var(--border-radius); padding: 10px; margin-top: 10px; font-size: 14px;">
+                <div style="margin-bottom: 5px;"><strong>Hirer:</strong> demo@example.com / password123</div>
+                <div><strong>Worker:</strong> worker@example.com / worker123</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div class="screen" id="login-screen">
+        <h2>Log In</h2>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+            <small class="error-message" id="email-error"></small>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password">
+            <small class="error-message" id="password-error"></small>
+        </div>
+        <div class="form-group">
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me">
+                <label for="remember-me" class="checkbox-label">Remember me</label>
+            </div>
+            <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+        <button class="btn" id="login-btn" onclick="attemptLogin()">Log In</button>
+        <div class="login-separator">
+            <span>OR</span>
+        </div>
+        <button class="btn btn-secondary" onclick="showScreen('signup-screen')">Sign up</button>
+        <button class="btn btn-google">
+            <i class="fab fa-google"></i>
+            Sign in with Google
+        </button>
+    </div>
+
+    <!-- Sign Up Screen -->
+    <div class="screen" id="signup-screen">
+        <button class="back-btn" onclick="showScreen('login-screen')">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h2>Create Account</h2>
+        <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Create a password">
+        </div>
+        <button class="btn" onclick="showScreen('user-role-screen')">Sign Up</button>
+    </div>
+
+    <!-- User Role Selection Screen -->
+    <div class="screen" id="user-role-screen">
+        <h2>I am a...</h2>
+        <div class="role-btn" onclick="selectRole(this, 'labour')" data-role="labour">
+            I am a Labour
+        </div>
+        <div class="role-btn" onclick="selectRole(this, 'hirer')" data-role="hirer">
+            I am a Hirer
+        </div>
+        <button class="btn" onclick="continueWithRole()">Continue</button>
+    </div>
+
+    <!-- Home Screen (Hirer View) -->
+    <div class="screen" id="home-screen">
+        <button class="back-btn" onclick="showScreen('user-role-screen')">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h2>Find Workers</h2>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Find workers...">
+        </div>
+        <div class="filter-tags">
+            <div class="filter-tag active" onclick="toggleFilter(this)">Electrician</div>
+            <div class="filter-tag" onclick="toggleFilter(this)">Plumber</div>
+            <div class="filter-tag" onclick="toggleFilter(this)">Carpenter</div>
+            <div class="filter-tag" onclick="toggleFilter(this)">Painter</div>
+        </div>
+
+        <div class="worker-card" onclick="showScreen('worker-profile-screen')">
+            <div class="worker-img">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="worker-info">
+                <div class="worker-name">Michael Johnson</div>
+                <div class="worker-details">Toronto • 5 years exp.</div>
+            </div>
+        </div>
+
+        <div class="worker-card" onclick="showScreen('worker-profile-screen')">
+            <div class="worker-img">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="worker-info">
+                <div class="worker-name">Sarah Williams</div>
+                <div class="worker-details">Vancouver • 8 years exp.</div>
+            </div>
+        </div>
+
+        <div class="worker-card" onclick="showScreen('worker-profile-screen')">
+            <div class="worker-img">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="worker-info">
+                <div class="worker-name">David Lee</div>
+                <div class="worker-details">Calgary • 3 years exp.</div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons" style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <button class="btn btn-secondary" style="width: 48%;" onclick="showScreen('my-bookings-screen')">
+                <i class="fas fa-calendar-alt"></i> My Bookings
+            </button>
+            <button class="btn btn-secondary" style="width: 48%;" onclick="showScreen('settings-screen')">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Worker Profile Screen -->
+    <div class="screen" id="worker-profile-screen">
+        <button class="back-btn" onclick="showScreen('home-screen')">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div class="worker-img" style="width: 100px; height: 100px; margin: 0 auto 15px;">
+                <i class="fas fa-user"></i>
+            </div>
+            <h2 style="margin-bottom: 5px;">Michael Johnson</h2>
+            <div class="worker-details">Toronto • 5 years experience</div>
+        </div>
+
+        <div class="skills-row">
+            <label>Skills</label>
+            <div>Electrical wiring, Circuit installation, Home automation, Industrial electrical work</div>
+        </div>
+
+        <div class="ratings">
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <div>4.5 (126 reviews)</div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <p>Licensed electrician with 5+ years of experience in residential and commercial electrical work. Specializes in home automation and smart home installations.</p>
+        </div>
+
+        <button class="btn btn-success pulse" onclick="showScreen('booking-confirmation-screen')">Book Now</button>
+    </div>
+
+    <!-- Booking Confirmation Screen -->
+    <div class="screen" id="booking-confirmation-screen">
+        <button class="back-btn" onclick="showScreen('worker-profile-screen')">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h2>Booking Details</h2>
+        <div class="form-group">
+            <label for="booking-date">Date</label>
+            <input type="date" id="booking-date">
+        </div>
+        <div class="form-group">
+            <label for="booking-time">Time</label>
+            <input type="time" id="booking-time">
+        </div>
+        <div class="form-group">
+            <label for="booking-address">Address</label>
+            <input type="text" id="booking-address" placeholder="Enter your address">
+        </div>
+        <div class="form-group">
+            <label for="booking-notes">Job Description</label>
+            <input type="text" id="booking-notes" placeholder="Describe what you need done">
+        </div>
+        <button class="btn btn-success" onclick="confirmBooking()">Confirm Booking</button>
+    </div>
+
+    <!-- My Bookings Screen -->
+    <div class="screen" id="my-bookings-screen">
+        <button class="back-btn" onclick="showScreen('home-screen')">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h2>My Bookings</h2>
+        
+        <div class="booking-item">
+            <div class="booking-date">May 10, 2025</div>
+            <div class="booking-info"><strong>Worker:</strong> Michael Johnson (Electrician)</div>
+            <div class="booking-info"><strong>Time:</strong> 2:00 PM - 4:00 PM</div>
+            <div class="booking-info"><strong>Address:</strong> 123 Main St, Toronto</div>
+            <div class="booking-info"><strong>Status:</strong> <span style="color: var(--secondary)">Confirmed</span></div>
+        </div>
+        
+        <div class="booking-item">
+            <div class="booking-date">May 15, 2025</div>
+            <div class="booking-info"><strong>Worker:</strong> Sarah Williams (Plumber)</div>
+            <div class="booking-info"><strong>Time:</strong> 10:00 AM - 12:00 PM</div>
+            <div class="booking-info"><strong>Address:</strong> 123 Main St, Toronto</div>
+            <div class="booking-info"><strong>Status:</strong> <span style="color: var(--secondary)">Confirmed</span></div>
+        </div>
+        
+        <div class="booking-item">
+            <div class="booking-date">April 28, 2025</div>
+            <div class="booking-info"><strong>Worker:</strong> David Lee (Carpenter)</div>
+            <div class="booking-info"><strong>Time:</strong> 1:00 PM - 5:00 PM</div>
+            <div class="booking-info"><strong>Address:</strong> 123 Main St, Toronto</div>
+            <div class="booking-info"><strong>Status:</strong> <span style="color: #888">Completed</span></div>
+        </div>
+    </div>
+
+    <!-- Settings/Profile Screen -->
+    <div class="screen" id="settings-screen">
+        <button class="back-btn" onclick="showScreen('home-screen')">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div class="worker-img" style="width: 100px; height: 100px; margin: 0 auto 15px;">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        <h2>Profile Settings</h2>
+        <div class="form-group">
+            <label for="profile-name">Name</label>
+            <input type="text" id="profile-name" value="John Smith">
+        </div>
+        <div class="form-group">
+            <label for="profile-email">Email</label>
+            <input type="email" id="profile-email" value="john.smith@example.com">
+        </div>
+        <div class="form-group">
+            <label for="profile-phone">Phone</label>
+            <input type="tel" id="profile-phone" value="+1 (555) 123-4567">
+        </div>
+        <div class="form-group">
+            <label for="profile-address">Address</label>
+            <input type="text" id="profile-address" value="123 Main St, Toronto, ON">
+        </div>
+        <button class="btn">Save Changes</button>
+        <button class="btn btn-secondary" onclick="logoutUser()">Log Out</button>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 30px; border-radius: var(--border-radius); text-align: center; max-width: 80%; animation: fadeIn 0.3s ease;">
+            <div style="font-size: 60px; color: var(--secondary); margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 style="margin-bottom: 10px;">Booking Confirmed!</h2>
+            <p>Your booking has been successfully scheduled.</p>
+            <button class="btn btn-success" onclick="hideModal('success-modal')">View My Bookings</button>
+        </div>
+    </div>
+
+    <script>
+        // Current active screen
+        let currentScreen = 'welcome-screen';
+        // Selected role
+        let selectedRole = null;
+        
+        // Demo user credentials
+        const users = [
+            { email: "demo@example.com", password: "password123", name: "Demo User", role: "hirer" },
+            { email: "worker@example.com", password: "worker123", name: "Demo Worker", role: "labour" },
+            { email: "admin@example.com", password: "admin123", name: "Admin User", role: "admin" }
+        ];
+        
+        // Current logged in user
+        let currentUser = null;
+        
+        // In-memory storage for session (instead of localStorage)
+        const sessionStorage = {
+            data: {},
+            setItem: function(key, value) {
+                this.data[key] = value;
+            },
+            getItem: function(key) {
+                return this.data[key] || null;
+            },
+            removeItem: function(key) {
+                delete this.data[key];
+            }
+        };
+        
+        // Check if user is already logged in (from session storage)
+        function checkLoginStatus() {
+            try {
+                const savedUser = sessionStorage.getItem('currentUser');
+                if (savedUser) {
+                    currentUser = JSON.parse(savedUser);
+                    if (currentUser && currentUser.email) {
+                        // Auto-login and redirect to appropriate screen
+                        selectedRole = currentUser.role;
+                        showScreen('home-screen');
+                        
+                        // Update UI with user information
+                        if (document.getElementById('profile-name')) {
+                            document.getElementById('profile-name').value = currentUser.name;
+                        }
+                        
+                        if (document.getElementById('profile-email')) {
+                            document.getElementById('profile-email').value = currentUser.email;
+                        }
+                        
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.log("Error checking login status:", error);
+            }
+            return false;
+        }
+        
+        // Attempt login with provided credentials
+        function attemptLogin() {
+            const emailEl = document.getElementById('email');
+            const passwordEl = document.getElementById('password');
+            
+            if (!emailEl || !passwordEl) return;
+            
+            const email = emailEl.value;
+            const password = passwordEl.value;
+            const rememberMeEl = document.getElementById('remember-me');
+            const rememberMe = rememberMeEl ? rememberMeEl.checked : false;
+            
+            // Reset error messages
+            const emailErrorEl = document.getElementById('email-error');
+            const passwordErrorEl = document.getElementById('password-error');
+            
+            if (emailErrorEl) emailErrorEl.textContent = '';
+            if (passwordErrorEl) passwordErrorEl.textContent = '';
+            
+            // Validate inputs
+            let hasError = false;
+            
+            if (!email) {
+                if (emailErrorEl) emailErrorEl.textContent = 'Email is required';
+                hasError = true;
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                if (emailErrorEl) emailErrorEl.textContent = 'Please enter a valid email';
+                hasError = true;
+            }
+            
+            if (!password) {
+                if (passwordErrorEl) passwordErrorEl.textContent = 'Password is required';
+                hasError = true;
+            }
+            
+            if (hasError) return;
+            
+            // Check credentials
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Login successful
+                currentUser = user;
+                selectedRole = user.role;
+                
+                // Save to session storage if remember me is checked
+                if (rememberMe) {
+                    try {
+                        sessionStorage.setItem('currentUser', JSON.stringify(user));
+                    } catch (error) {
+                        console.log("Error saving user:", error);
+                    }
+                }
+                
+                // Show loading animation
+                const loginBtn = document.getElementById('login-btn');
+                if (loginBtn) {
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                    loginBtn.disabled = true;
+                }
+                
+                // Simulate loading
+                setTimeout(() => {
+                    showScreen('user-role-screen');
+                    // Reset button
+                    if (loginBtn) {
+                        loginBtn.innerHTML = 'Log In';
+                        loginBtn.disabled = false;
+                    }
+                }, 1500);
+                
+            } else {
+                // Login failed
+                if (passwordErrorEl) passwordErrorEl.textContent = 'Invalid email or password';
+                
+                // Shake animation for login button
+                const loginBtn = document.getElementById('login-btn');
+                if (loginBtn) {
+                    loginBtn.classList.add('shake');
+                    setTimeout(() => {
+                        loginBtn.classList.remove('shake');
+                    }, 500);
+                }
+            }
+        }
+        
+        // Log out user
+        function logoutUser() {
+            // Clear user data
+            currentUser = null;
+            try {
+                sessionStorage.removeItem('currentUser');
+            } catch (error) {
+                console.log("Error removing user:", error);
+            }
+            
+            // Reset fields
+            const emailEl = document.getElementById('email');
+            const passwordEl = document.getElementById('password');
+            const rememberMeEl = document.getElementById('remember-me');
+            
+            if (emailEl) emailEl.value = '';
+            if (passwordEl) passwordEl.value = '';
+            if (rememberMeEl) rememberMeEl.checked = false;
+            
+            // Show welcome screen
+            showScreen('welcome-screen');
+        }
+
+        // Function to show a specific screen
+        function showScreen(screenId) {
+            // Hide current screen
+            document.getElementById(currentScreen).classList.remove('active');
+            // Show new screen
+            document.getElementById(screenId).classList.add('active');
+            // Update current screen
+            currentScreen = screenId;
+
+            // Add animation to elements
+            const elements = document.querySelectorAll(`#${screenId} .form-group, #${screenId} .btn, #${screenId} .worker-card, #${screenId} .booking-item`);
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                el.style.transitionDelay = `${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 50);
+            });
+        }
+
+        // Function to select role
+        function selectRole(element, role) {
+            // Remove selected class from all role buttons
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            // Add selected class to clicked button
+            element.classList.add('selected');
+            // Update selected role
+            selectedRole = role;
+        }
+
+        // Function to continue with selected role
+        function continueWithRole() {
+            if (selectedRole) {
+                showScreen('home-screen');
+            } else {
+                alert('Please select a role');
+            }
+        }
+
+        // Function to toggle filter
+        function toggleFilter(element) {
+            element.classList.toggle('active');
+        }
+
+        // Function to confirm booking
+        function confirmBooking() {
+            // Show success modal
+            const modal = document.getElementById('success-modal');
+            modal.style.display = 'flex';
+            
+            // Add animation to modal content
+            const modalContent = modal.querySelector('div');
+            modalContent.style.transform = 'scale(0.8)';
+            modalContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                modalContent.style.transform = 'scale(1)';
+                modalContent.style.opacity = '1';
+                modalContent.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+            }, 50);
+        }
+
+        // Function to hide modal
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            showScreen('my-bookings-screen');
+        }
+
+        // Add hover animation to worker cards
+        document.querySelectorAll('.worker-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'none';
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            // Simulate loading for demo purposes
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transition = 'opacity 0.5s ease';
+                
+                // Check if user is already logged in
+                try {
+                    checkLoginStatus();
+                } catch (error) {
+                    console.log("Error in login check:", error);
+                }
+            }, 200);
+        });
+        
+        // Event listeners for login form
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Add keypress event listener for login form
+                const passwordInput = document.getElementById('password');
+                if (passwordInput) {
+                    passwordInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            attemptLogin();
+                        }
+                    });
+                }
+                
+                // Show password toggle
+                const passwordToggle = document.createElement('i');
+                passwordToggle.className = 'fas fa-eye password-toggle';
+                passwordToggle.style.position = 'absolute';
+                passwordToggle.style.right = '15px';
+                passwordToggle.style.top = '45px';
+                passwordToggle.style.cursor = 'pointer';
+                passwordToggle.style.color = 'var(--gray)';
+                
+                if (passwordInput && passwordInput.parentNode) {
+                    passwordInput.parentNode.style.position = 'relative';
+                    passwordInput.parentNode.appendChild(passwordToggle);
+                    
+                    passwordToggle.addEventListener('click', function() {
+                        if (passwordInput.type === 'password') {
+                            passwordInput.type = 'text';
+                            passwordToggle.className = 'fas fa-eye-slash password-toggle';
+                        } else {
+                            passwordInput.type = 'password';
+                            passwordToggle.className = 'fas fa-eye password-toggle';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log("Error setting up event listeners:", error);
+            }
+        });
+    </script>
+</div>
+
+</body>
+</html>
